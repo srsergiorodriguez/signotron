@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abstractor mini</title>
+    <style> body {padding: 0; margin: 0;} </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
+    <script src="../palettes.js"></script>
+    <script src="../core.js"></script>
+    <script src="./sketch.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+  </head>
+
+  <style>
+    #general {
+      width:800px;
+      margin:auto;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    #app {
+      box-sizing: border-box;
+      margin:0.5em 1em;
+      padding:0em 0.5em;
+    }
+
+    #app_container {
+      box-sizing: border-box;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap:0.5em;
+    }
+
+    #app_controls_container {
+      box-sizing: border-box;
+      border:solid 1px;
+      padding:1em;
+    }
+
+    #app_canvas_container {
+      border:solid 1px;
+      width:450px;
+      height:450px;
+    }
+
+    #app_code_container {
+      box-sizing: border-box;
+      border:solid 1px;
+      padding:1em;
+      margin-top:1em;
+    }
+
+    .shape_set {
+      box-sizing: border-box;
+      text-align:center;
+    }
+
+    .highlighted_set {
+      background: #f7ff8e;
+    }
+
+    .shape_set p {
+      box-sizing: border-box;
+      font-size:10px;
+      margin:0;
+      padding:0;
+    }
+
+    .buttons_div {
+      box-sizing: border-box;
+    }
+
+    .buttons_name {
+      vertical-align:top;
+      text-align:right;
+      display:inline;
+    }
+
+    .icon_button {
+      box-sizing: border-box;
+      display:inline-block;
+      border: 1px solid;
+      border-radius:4px;
+      width:25px;
+      height:25px;
+    }
+
+    .highlighted_button {
+      border: dotted 3px #822020;
+    }
+
+    .code_input {
+      width:100%;
+      font-size:14px;
+    }
+
+    .input_btn {
+      box-sizing: border-box;
+      border-style: none;
+      border-radius:3px;
+      background-color:#111111;
+      color:white;
+      font-size:14px;
+      margin:0.2em 0.1em;
+      padding:0.3em;
+      display:inline;
+      transition: 0.3s;
+    }
+
+    .input_btn:hover {
+      background-color:white;
+      color:#111111;
+    }
+
+    footer {
+      box-sizing: border-box;
+      margin:0.5em 1em;
+      text-align:center;
+      font-size:10px;
+    }
+
+    @media (max-width: 400px) {
+      #app_container {
+        grid-template-columns: 1fr;
+        grid-gap:0.5em;
+      }
+      #app_controls_container {order: 2;}
+      #app_visual_container {order: 1;}
+      #general {
+        margin:0;
+        padding:0;
+        width:100%;
+      }
+      #app {
+        box-sizing: border-box;
+        margin:0;
+        padding:0;
+      }
+      .icon_button {
+        width:40px;
+        height:40px;
+      }
+      .input_btn {
+        font-size:20px;
+        margin:0.2em 0.1em;
+        padding:0.3em;
+      }
+      .code_input {
+        font-size:20px;
+      }
+    }
+
+  </style>
+
+  <body>
+    <div id="general">
+      <div id="app">
+        <div id="app_container">
+          <div id="app_controls_container">
+            <div class="shape_control" id="shape_control">
+            </div>
+          </div>
+          <div id="app_visual_container">
+            <div id="app_canvas_container">
+            </div>
+            <div id="app_code_container">
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>Por Sergio Rodríguez Gómez — 2020 — v.2.0.0</p>
+      </footer>
+    </div>
+  </body>
+</html>
