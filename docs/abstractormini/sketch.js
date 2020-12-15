@@ -7,7 +7,7 @@ MIT LICENSE
 */
 
 let codeInput;
-let btnURLS = {shape:[],size:[],position:[],rotation:[]};
+let btnURLS = {shape:[],size:[],position:[],rotation:[],color:[]};
 let iconBtns = [];
 let shapeSets = [];
 
@@ -64,16 +64,9 @@ function createIconButtonsSet(parent_,shapeSetIndex_) {
 function createIconButtons(iconType_,parent_,setIndex_) {
 	// Create invididual Buttons
 	const buttonsDiv = createDiv().class("buttons_div").parent(parent_);
-	if (iconType_=="color") {
-		for (let i=0;i<colors.length;i++) {
-			createDiv("").style('background',colors[i]).parent(buttonsDiv).class("icon_button")
-				.mouseClicked(()=>{setCode(setIndex_,i)});
-		}
-	} else {
-		for (let i=0;i<cmax;i++) {
-			createImg(btnURLS[iconType_][i]).parent(buttonsDiv).class("icon_button")
-				.mouseClicked(()=>{setCode(setIndex_,i)});
-		}
+	for (let i=0;i<cmax;i++) {
+		createImg(btnURLS[iconType_][i]).parent(buttonsDiv).class("icon_button")
+			.mouseClicked(()=>{setCode(setIndex_,i)});
 	}
 }
 
@@ -98,10 +91,6 @@ function unHighlightSet() {
 	}
 }
 
-function getImageBtn() {
-	return document.getElementById('canvas').toDataURL('image/png',0.1);
-}
-
 function submitCode() {
 	if (codeInput.value().length===code.length&&!(/[a-z !_]/gi.test(codeInput.value()))) {
 		code = [...stringToArray(codeInput.value())];
@@ -111,10 +100,6 @@ function submitCode() {
 	} else {
 		codeInput.value('código invalido');
 	}
-}
-
-function resetCode() {
-	code = Array(codeLength).fill(0);
 }
 
 function randomCode() {
@@ -171,38 +156,23 @@ function readCode() {
 }
 
 function createIconImgs() {
-	//shape,size,color,position,rotation
-	resetCode();
+	const emptyCode = Array(codeLength).fill(0);
+	code = emptyCode;
 	for (let i=0;i<cmax;i++) {
-	  // Shape
-	  code[0] = i;
-	  code[1] = 7;
-	  code[2] = 1;
-	  code[3] = 5;
-	  code[4] = 0;
-	  readCode();
-	  btnURLS.shape[i] = getImageBtn();
-		// Size
-		code[0] = 4;
-		code[1] = i;
-		readCode();
-		btnURLS.size[i] = getImageBtn();
-		// Position
-		code[1] = 3;
-		code[2] = 2;
-		code[3] = i;
-		code = i===0?[...[6,9,2,5,3,6,9,2,5,5],...Array(codeLength-10).fill(0)]:code; // Create an 'X' to represent the absence of position
-		readCode();
-		btnURLS.position[i] = getImageBtn();
-		// Rotation
-		resetCode();
-		code[0] = 8;
-		code[1] = 5;
-		code[2] = 1;
-		code[3] = 5;
-		code[4] = i;
-		readCode();
-		btnURLS.rotation[i] = getImageBtn();
+		const preShape = [
+			[i,7,1,5,0], // Shape
+			[4,i,1,5,0], // Size
+			[4,9,i,5,0], // Color
+			[4,3,2,i,0], // Position
+			[8,5,1,5,i] // Rotation
+		]
+		for (let j=0;j<preShape.length;j++) {
+			const v = preShape[j];
+			code = [...v,...Array(codeLength-v.length).fill(0)];
+			if (i===0&&j===3) {code = [...[6,9,2,5,3,6,9,2,5,5],...Array(codeLength-10).fill(0)]} // Make an X in 0 position
+			readCode();
+			btnURLS[attributeKeys[j]][i] = document.getElementById('canvas').toDataURL('image/png',0.1);
+		}
 	}
-	resetCode();
+	code = emptyCode;
 }

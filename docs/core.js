@@ -15,6 +15,7 @@ function createShapeImg(img,shape_,size_,color_,position_,rotation_) {
 	} else {
 		img.push();
 		angleMode(DEGREES);
+		img.angleMode(DEGREES);
 		//Define position
 		let pos = position_===0?{}:{
 			x:res/6*((Math.floor((position_-1)/3)*2)+1),
@@ -25,7 +26,7 @@ function createShapeImg(img,shape_,size_,color_,position_,rotation_) {
 		//Define rotation
 		if (rotation_<8) {
 			img.rotate(rotationAngles[rotation_]);
-		} else if (rotation_==8) {
+		} else if (rotation_===8) {
 			img.applyMatrix(-1,0,0,1,0,0);
 		} else {
 			img.applyMatrix(0,1,1,0,0,0);
