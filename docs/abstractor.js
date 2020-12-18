@@ -156,10 +156,8 @@ function readCode() {
 }
 
 function createIconImgs() {
-	//shape,size,color,position,rotation
 	const emptyCode = Array(codeLength).fill(0);
 	code = emptyCode;
-
 	for (let i=0;i<cmax;i++) {
 		const preShape = [
 			[i,7,1,5,0], // Shape

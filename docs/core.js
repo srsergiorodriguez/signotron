@@ -3,7 +3,6 @@ const attributeKeys = ['shape','size','color','position','rotation'];
 const shapes = 3; // Default number of shapes
 const attributeNr = attributeKeys.length;
 const codeLength = attributeNr*shapes;
-const codesNum = 4; // Number of concatenated codes in compositor
 const cmax = 10; // Base for the code
 let code = Array(codeLength).fill(0); // Initial state of the code
 let colors = palettes["basic"];
@@ -16,7 +15,6 @@ function createShapeImg(img,shape_,size_,color_,position_,rotation_) {
 		img.push();
 		angleMode(DEGREES);
 		img.angleMode(DEGREES);
-		//Define position
 		let pos = position_===0?{}:{
 			x:res/6*((Math.floor((position_-1)/3)*2)+1),
 			y:res/6*((((position_-1)%3)*2)+1)

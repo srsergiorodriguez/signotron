@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>motivomotivo — dibujos y patrones geométricos</title>
+
+    <meta name="description" content="Una aplicación para crear dibujos y patrones patrones geométricos">
+    <meta name="keywords" content="abstracción, signotron, abstractor, semiótica, sergio rodríguez gómez, íconos, símbolos, signo, humanidades digitales, diseño, arte, patrón, motivomotivo">
+    <meta name="author" content="Sergio Rodríguez Gómez">
+    <meta name="distribution" content="Global">
+    <meta name="robots" content="index">
+
+    <!-- Facebook open graph meta -->
+    <meta name="og:title" content="Motivo — dibujos y patrones geométricos"/>
+    <meta name="og:url" content="https://srsergiorodriguez.github.io/signotron/motivomotivo/"/>
+    <meta name="og:image" content="https://srsergiorodriguez.github.io/signotron/motivothumb.png/"/>
+    <meta name="og:site_name" content="motivomotivo — dibujos y patrones geométricos"/>
+    <meta name="og:description" content="Una aplicación para crear dibujos y patrones patrones geométricos"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
+    <script src="../palettes.js"></script>
+    <script src="../core.js"></script>
+    <script src="./helpers.js"></script>
+    <script src="./sketch.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+  </head>
+
+  <style>
+    * {
+      font-family: 'Open Sans', sans-serif;
+      padding: 0;
+      margin: 0;
+    }
+
+    #general {
+      box-sizing: border-box;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    header {
+      box-sizing: border-box;
+      margin:auto;
+      padding:0;
+      text-align:center;
+      color:#fff;
+      background:#000;
+    }
+
+    p {
+      font-size:9px;
+      margin:0;
+      padding:0;
+    }
+
+    #app_container {
+      box-sizing:border-box;
+      display: none;
+      padding:0;
+      margin: auto;
+      text-align: center;
+    }
+
+    .app_grid {
+      box-sizing:border-box;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: solid 1px;
+    }
+
+    #setup_container {
+      box-sizing:border-box;
+      margin: auto;
+      padding: 5px;
+      border: solid 1px;
+      text-align: center;
+    }
+
+    .tile_input {
+      width: 30px;
+    }
+
+    #preview_container {
+      padding:0;
+      margin:auto;
+    }
+
+    #preview_img {
+      border:solid 1px;
+      width: 100%;
+    }
+
+    .app_interaction {
+      box-sizing:border-box;
+      margin:auto;
+      padding:0.2em;
+    }
+
+    #app_controls_container {
+      box-sizing:border-box;
+      display:grid;
+      grid-gap:4px;
+    }
+
+    .app_code_container {
+      box-sizing:border-box;
+    }
+
+    .code_input {
+      box-sizing:border-box;
+      width:100%;
+      font-size:14px;
+      margin:0;
+      padding:1px;
+    }
+
+    #general_code_input {
+      box-sizing:border-box;
+      width:98%;
+      font-size:14px;
+      margin:0.5em 0.2em 0em;
+    }
+
+    .buttons_div {
+      box-sizing: border-box;
+    }
+
+    .buttons_name {
+      vertical-align:top;
+      text-align:right;
+      display:inline;
+    }
+
+    .input_btn {
+      box-sizing:border-box;
+      border-style: none;
+      border-radius:3px;
+      background-color:black;
+      color:white;
+      font-size:12px;
+      margin:0.3em 0.3em 0.9em;
+      padding:0.5em;
+      display:inline;
+      cursor: pointer;
+    }
+
+    .input_btn:hover {
+      background-color:white;
+      color:black;
+    }
+
+    footer {
+      box-sizing:border-box;
+      margin:0.5em 1em;
+      text-align:center;
+      font-size:12px;
+      margin: auto;
+    }
+  </style>
+
+  <body>
+    <div id="general">
+      <header>
+        <h1>motivomotivo</h1>
+      </header>
+      <div id="setup_container">
+        <label for="x_tiles_input">Baldosas horizontales =></label>
+        <input type="number" min="1" max="15" id="x_tiles_input" value="4">
+        <label for="x_tiles_input">Baldosas verticales =></label>
+        <input type="number" min="1" max="15" id="y_tiles_input" value="4">
+        <button id="tiles_btn" class="input_btn">Listo</button>
+      </div>
+      <div id="app_container">
+        <div class="app_grid">
+          <div id="preview_container">
+            <img id="preview_img"/>
+          </div>
+          <div id="codes_container">
+            <div id="app_general_code_container" class="app_interaction">
+            </div>
+            <div id="app_interaction" class="app_interaction">
+              <div id="app_controls_container">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <p>Por Sergio Rodríguez Gómez — 2019 — V2.0</p>
+    </footer>
+  </body>
+</html>
