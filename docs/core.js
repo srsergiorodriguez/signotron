@@ -1,4 +1,4 @@
-const res = 450; // Default size of the canvas
+let res = 450; // Default size of the canvas
 const attributeKeys = ['shape','size','color','position','rotation'];
 const shapes = 3; // Default number of shapes
 const attributeNr = attributeKeys.length;
