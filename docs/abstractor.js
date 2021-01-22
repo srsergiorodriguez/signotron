@@ -26,9 +26,12 @@ function setup() {
 }
 
 function setParameters() {
-	let params = getURLParams();
+	const params = getURLParams();
 	if (params.pal) {
 		colors = palettes.hasOwnProperty(params.pal)?palettes[params.pal]:colors;
+	}
+	if (params.pos) {
+		positionFormat = params.pos;
 	}
 }
 

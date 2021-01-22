@@ -48,6 +48,9 @@ function setParameters() {
 		backColor = color(...params.background.split("_",3).map(x=>+x));
 		console.log(backColor);
 	}
+	if (params.pos) {
+		positionFormat = params.pos;
+	}
 }
 
 function configApp() {

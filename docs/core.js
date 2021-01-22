@@ -5,7 +5,8 @@ const attributeNr = attributeKeys.length;
 const codeLength = attributeNr*shapes;
 const cmax = 10; // Base for the code
 let code = Array(codeLength).fill(0); // Initial state of the code
-let colors = palettes["basic"];
+let colors = palettes["a"];
+let positionFormat = "a";
 const rotationAngles = [0,45,90,135,180,225,270,315,45/2,225/2];
 
 function createShapeImg(img,shape_,size_,color_,position_,rotation_) {
@@ -15,10 +16,20 @@ function createShapeImg(img,shape_,size_,color_,position_,rotation_) {
 		img.push();
 		angleMode(DEGREES);
 		img.angleMode(DEGREES);
-		let pos = position_===0?{}:{
-			x:res/6*((Math.floor((position_-1)/3)*2)+1),
-			y:res/6*((((position_-1)%3)*2)+1)
-		};
+
+		let pos;
+		if (positionFormat==="b") {
+			pos = position_===0?{}:{
+				x:res/6*((Math.floor((position_-1)/3)*2)+1),
+				y:res/6*((((position_-1)%3)*2)+1)
+			};
+		} else {
+			pos = position_===0?{}:{
+				x:res/2*((Math.floor((position_-1)/3))),
+				y:res/2*((((position_-1)%3)))
+			};
+		}
+		
 		img.translate(pos.x,pos.y);
 
 		//Define rotation
@@ -87,5 +98,3 @@ function createShapeImg(img,shape_,size_,color_,position_,rotation_) {
 	}
 	return img;
 }
-
-// 000000000016450
