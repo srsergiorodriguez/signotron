@@ -28,6 +28,10 @@
   </head>
 
   <style>
+    * {
+      font-family: 'Open Sans', sans-serif;
+      box-sizing: border-box;
+    }
 
     body {
       padding:0;
@@ -36,12 +40,8 @@
     }
 
     #general {
-      width:990px;
+      width:1000px;
       margin:auto;
-    }
-
-    h1,h2,h3,h4,h5,h6 {
-      font-family: 'Open Sans', sans-serif;
     }
 
     h1 {
@@ -49,28 +49,11 @@
       font-size:50px;
     }
 
-    p {
-      font-family: 'Open Sans', sans-serif;
-    }
-
-    p a {
-      font-family: 'Open Sans', sans-serif;
-      color:black;
-      font-size:16px;
-    }
-
-    a {
-      font-family: 'Open Sans', sans-serif;
-      color:black;
-      font-size:12px;
-    }
-
     mark {
       background-color: var(--main-color);
     }
 
     header {
-      box-sizing: border-box;
       margin:0.5em 1em;
       padding:1em;
       text-align:center;
@@ -86,58 +69,58 @@
     }
 
     #app {
-      box-sizing: border-box;
       margin:0.5em 1em;
       padding:0em 0.5em;
     }
 
     #instructions_container {
-      box-sizing: border-box;
       padding:1em;
     }
 
     #app_container {
-      box-sizing: border-box;
       display: grid;
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: 1fr 1fr;
       grid-gap:0.5em;
     }
 
     #app_controls_container {
-      box-sizing: border-box;
-      min-width:395px;
+      width: 100%;
       border:solid 1px;
-      padding:0em 1em;
-    }
-
-    #app_controls_container h3 {
-      background-color:var(--main-color);
     }
 
     #app_canvas_container {
-      border:solid 1px;
+      box-sizing: content-box;
+      border: solid 1px;
       width:450px;
       height:450px;
     }
 
     #app_code_container {
-      box-sizing: border-box;
       background-color: var(--main-color);
       padding:1em;
-      margin-top:1em;
+    }
+
+    .figure_headings {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      text-align: center;
+    }
+
+    .figure_name {
+      border: solid 1px;
+    }
+
+    .shape_control {
+      margin: 5px 0px;
     }
 
     .shape_set {
-      box-sizing: border-box;
-      text-align:center;
-    }
-
-    .highlighted_set {
-      background:#a5a5a5;
+      display: inline;
     }
 
     .buttons_div {
-      box-sizing: border-box;
+      display: inline;
+      position: relative;
     }
 
     .buttons_name {
@@ -147,25 +130,57 @@
     }
 
     .icon_button {
-      box-sizing: border-box;
       display:inline-block;
       border: 1px solid #000;
       border-radius:4px;
       width:30px;
       height:30px;
+      cursor: pointer;
     }
 
-    .highlighted_button {
-      border: solid 3px var(--main-color);
+    .dropdown {
+      box-sizing: content-box;
+      padding: 5px;
+      z-index: 2;
+      width: 150px;
+      background: white;
+      border: 1px solid #000;
+      border-radius:4px;
+      position: absolute;
+      display: block;
+      top: -106px;
+      left: 0px;
+    }
+
+    .dropdown::after {
+      content: " ";
+      position: absolute;
+      top: 100%;
+      left: 10px;
+      margin-left: -5px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: black transparent transparent transparent;
+    }
+
+    .icon_button_option {
+      display: inline-block;
+      border: 1px solid #000;
+      border-radius:4px;
+      width:30px;
+      height:30px;
+      cursor: pointer;
     }
 
     .code_input {
-      width:100%;
-      font-size:35px;
+      width:450px;
+      font-size:30px;
+      letter-spacing: 12.3px;
+      font-family: 'Courier New', monospace;
     }
 
     .input_btn {
-      box-sizing: border-box;
+      cursor: pointer;
       border-style: none;
       border-radius:3px;
       background-color:#111111;
@@ -180,56 +195,12 @@
     .input_btn:hover {
       background-color:white;
       color:#111111;
-
     }
 
     footer {
-      box-sizing: border-box;
       margin:0.5em 1em;
       text-align:center;
       font-size:12px;
-    }
-
-    @media (max-width: 400px) {
-      #general {
-        width:100%;
-        margin:0px;
-      }
-      #app_container {
-        grid-template-columns: 1fr;
-        grid-gap:0.5em;
-      }
-      #app_controls_container {
-        order: 2;
-        margin:0px;
-        padding:0px;
-      }
-      #app_visual_container {order: 1;}
-      #general {
-        margin:0px;
-        padding:0;
-        width:100%;
-      }
-      #app {
-        box-sizing: border-box;
-        margin:0;
-        padding:0;
-      }
-      .shape_set {
-        text-align:left;
-      }
-      .icon_button {
-        width:35px;
-        height:35px;
-      }
-      .input_btn {
-        font-size:20px;
-        margin:0.2em 0.1em;
-        padding:0.3em;
-      }
-      .code_input {
-        font-size:20px;
-      }
     }
   </style>
 
@@ -242,26 +213,29 @@
       <div id="app">
         <article id="instructions_container">
           <h2>Crea una abstracción usando solo 3 figuras</h2>
-          <p>El juego que plantea esta aplicación consiste en crear una <strong>imagen abstracta con solo 3 figuras</strong>. <br>Selecciona cuatro opciones diferentes en cada una de las figuras: <mark>forma, tamaño, color, posición y rotación</mark>. Las opciones son limitadas, pero eso no es un problema, es una ventaja, porque nos obliga a ser más imaginativos.
+          <p>El juego que plantea esta aplicación consiste en crear una <strong>imagen abstracta con solo 3 figuras</strong>. <br>Selecciona cinco opciones diferentes en cada una de las figuras: <mark>forma, tamaño, color, posición y rotación</mark>. Las opciones son limitadas, pero eso no es un problema, es una ventaja, porque nos obliga a ser más imaginativos.
           <br>Con cada selección, la aplicación produce un <strong>código de 15 números</strong>. Puedes usar ese código para guardar la figura abstracta. Si vuelves a ingresar el código y cliqueas <strong>"leer código"</strong>, la imagen se carga de nuevo, y así puedes verla o modificarla. También puedes generar una imagen al azar si haces clic en <strong>"código aleatorio"</strong>, o puedes guardar la imagen en el computador, en formato .png, si haces clic en <strong>"guardar imagen"</strong>.
         </article>
         <div id="app_container">
           <div id="app_controls_container">
-            <div class="shape_control" id="shape_control">
+            <div id="app_code_container">
+              <h3>Código de la imagen</h3>
+              <div class="figure_headings">
+                <span class="figure_name">Figura 1</span>
+                <span class="figure_name">Figura 2</span>
+                <span class="figure_name">Figura 3</span>
+              </div>
+              <div class="shape_control" id="shape_control"></div>
             </div>
           </div>
           <div id="app_visual_container">
             <div id="app_canvas_container">
             </div>
-            <div id="app_code_container">
-              <h3>Código de la imagen</h3>
-              <p>El código debe estar compuesto por 15 dígitos</p>
-            </div>
           </div>
         </div>
       </div>
       <footer>
-        <p>Por Sergio Rodríguez Gómez — 2020 — V.2.0</p>
+        <p>Por Sergio Rodríguez Gómez — 2020 — V.2.1.0</p>
       </footer>
     </div>
   </body>

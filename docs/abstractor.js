@@ -2,7 +2,7 @@
 Abstractor: una aplicación para crear y recuperar figuras abstractas 
 por medio de un código numérico.
 Por Sergio Rodríguez Gómez
-V.2.0.0
+V.2.1.0
 MIT LICENSE
 */
 
@@ -10,6 +10,7 @@ let codeInput;
 let btnURLS = {shape:[],size:[],position:[],rotation:[],color:[]};
 let iconBtns = [];
 let shapeSets = [];
+let toggleDropdown = false;
 
 function setup() {
 	createCanvas(res,res).id('canvas').parent(app_canvas_container);
@@ -21,7 +22,6 @@ function setup() {
 	createShapeSets(); // Read the code by dividing it in subcodes
 
 	iconBtns = selectAll(".icon_button");
-	highlightBtns();
 	shapeSets = selectAll(".shape_set");
 }
 
@@ -52,7 +52,6 @@ function createShapeSets() {
 	// Create a complete set of controls with multiple sets of buttons
 	for (let i=0;i<shapes;i++) {
 		const shapeSet = createDiv().parent(shape_control).class("shape_set");
-		createElement('p','Figura '+(i+1)).parent(shapeSet);
 		createIconButtonsSet(shapeSet,i);
 	}
 }
@@ -67,30 +66,31 @@ function createIconButtonsSet(parent_,shapeSetIndex_) {
 function createIconButtons(iconType_,parent_,setIndex_) {
 	// Create invididual Buttons
 	const buttonsDiv = createDiv().class("buttons_div").parent(parent_);
-	for (let i=0;i<cmax;i++) {
-		createImg(btnURLS[iconType_][i]).parent(buttonsDiv).class("icon_button")
-			.mouseClicked(()=>{setCode(setIndex_,i)});
-	}
+	createImg(btnURLS[iconType_][code[setIndex_]]).parent(buttonsDiv).class("icon_button")
+	.mouseClicked(function() {
+		selectAll(".dropdown").map(d=>d.remove());
+		if (!toggleDropdown) {
+			toggleDropdown = true;
+			createDiv().id("dropdown").class("dropdown").parent(buttonsDiv);
+			for (let i=0;i<cmax;i++) {
+				createImg(btnURLS[iconType_][i]).parent("#dropdown").class("icon_button_option")
+					.mouseClicked(function() {
+						setCode(setIndex_,i);
+						selectAll(".dropdown").map(d=>d.remove());
+						updateButtons();
+						toggleDropdown = false;
+					});
+			}
+		} else {
+			toggleDropdown = false;
+		}
+	});
 }
 
-function highlightBtns() {
-	for (let i=0;i<iconBtns.length;i++) {
-		iconBtns[i].removeClass('highlighted_button');
-	}
-	for (let i=0;i<code.length;i++) {
-		iconBtns[i*cmax+(code[i])].addClass('highlighted_button');
-	}
-}
-
-function highlightSet(index_) {
-	unHighlightSet();
-	let tempset = floor(index_/(code.length/shapes));
-	shapeSets[tempset].addClass('highlighted_set');
-}
-
-function unHighlightSet() {
-	for (let i=0;i<shapeSets.length;i++) {
-		shapeSets[i].removeClass('highlighted_set');
+function updateButtons() {
+	const btnImages = selectAll(".icon_button");
+	for (let i=0;i<btnImages.length;i++) {
+		btnImages[i].attribute("src",btnURLS[attributeKeys[i%attributeKeys.length]][code[i]]);
 	}
 }
 
@@ -98,8 +98,6 @@ function submitCode() {
 	if (codeInput.value().length===code.length&&!(/[a-z !_]/gi.test(codeInput.value()))) {
 		code = [...stringToArray(codeInput.value())];
 		readCode();
-		unHighlightSet();
-		highlightBtns();
 	} else {
 		codeInput.value('código invalido');
 	}
@@ -113,6 +111,7 @@ function randomCode() {
 	}
 	code=randomCode;
 	readCode();
+	updateButtons();
 }
 
 function saveImage() {
@@ -143,8 +142,6 @@ function setCode(index_,number_) {
 	// Set a particular value in an index of the code
 	code[index_] = number_;
 	readCode();
-	highlightSet(index_);
-	highlightBtns();
 }
 
 function readCode() {
@@ -156,6 +153,11 @@ function readCode() {
 		image(shape,0,0);
 	}
 	updateCodeString();
+	selectAll("canvas").map(d => {
+		if (d.class()!=="p5Canvas") {
+			d.remove();
+		}
+	});
 }
 
 function createIconImgs() {
@@ -177,5 +179,10 @@ function createIconImgs() {
 			btnURLS[attributeKeys[j]][i] = document.getElementById('canvas').toDataURL('image/png',0.1);
 		}
 	}
+	selectAll("canvas").map(d => {
+		if (d.class()!=="p5Canvas") {
+			d.remove();
+		}
+	});
 	code = emptyCode;
 }
