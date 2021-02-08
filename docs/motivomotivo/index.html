@@ -29,87 +29,99 @@
 
   <style>
     * {
+      box-sizing:border-box;
       font-family: 'Open Sans', sans-serif;
-      padding: 0;
-      margin: 0;
+      padding: 0px;
+      margin: 0px;
     }
 
     #general {
-      box-sizing: border-box;
       max-width: 1200px;
       margin: auto;
+      overflow: auto;
     }
 
     header {
-      box-sizing: border-box;
       margin:auto;
-      padding:0;
+      padding: 0px;
       text-align:center;
       color:#fff;
       background:#000;
     }
 
     p {
-      font-size:9px;
-      margin:0;
-      padding:0;
+      font-size: 9px;
+      margin: 0px;
+      padding: 0px;
     }
 
     #app_container {
-      box-sizing:border-box;
       display: none;
-      padding:0;
-      margin: auto;
+      padding: 0px;
+      margin: auto 0px;
       text-align: center;
     }
 
     .app_grid {
-      box-sizing:border-box;
+      box-sizing:content-box;
       display: grid;
       grid-template-columns: 1fr 1fr;
+      border: solid 1px;
+      grid-gap: 5px;
+    }
+
+    #app_general_code_container {
       border: solid 1px;
     }
 
     #setup_container {
-      box-sizing:border-box;
       margin: auto;
       padding: 5px;
       border: solid 1px;
       text-align: center;
     }
 
-    .tile_input {
-      width: 30px;
-    }
-
     #preview_container {
-      padding:0;
-      margin:auto;
+      padding: 0px;
+      margin: 0px;
+      position: relative;
     }
 
     #preview_img {
-      border:solid 1px;
       width: 100%;
+      display:block;
+      position: relative;
+      border: solid 0.5px black;
+    }
+
+    .overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0px;
+      top: 0px;
+    }
+
+    .selected {
+      position: absolute;
+      border: dotted 5px #FF6347;
+      pointer-events: none;
     }
 
     .app_interaction {
-      box-sizing:border-box;
-      margin:auto;
-      padding:0.2em;
+      margin: auto;
+      padding: 15px;
+      height: 100%;
     }
 
     #app_controls_container {
-      box-sizing:border-box;
       display:grid;
-      grid-gap:4px;
-    }
-
-    .app_code_container {
-      box-sizing:border-box;
+      grid-gap: 0px 4px;
+      margin: 0px;
+      padding: 0px;
     }
 
     .code_input {
-      box-sizing:border-box;
       width:100%;
       font-size:14px;
       margin:0;
@@ -117,14 +129,8 @@
     }
 
     #general_code_input {
-      box-sizing:border-box;
-      width:98%;
+      width:100%;
       font-size:14px;
-      margin:0.5em 0.2em 0em;
-    }
-
-    .buttons_div {
-      box-sizing: border-box;
     }
 
     .buttons_name {
@@ -134,16 +140,16 @@
     }
 
     .input_btn {
-      box-sizing:border-box;
-      border-style: none;
+      border: solid black 1px;
       border-radius:3px;
       background-color:black;
       color:white;
       font-size:12px;
-      margin:0.3em 0.3em 0.9em;
+      margin:0.3em 0.1em;
       padding:0.5em;
       display:inline;
       cursor: pointer;
+      transition: 0.3s;
     }
 
     .input_btn:hover {
@@ -151,12 +157,30 @@
       color:black;
     }
 
+    iframe {
+      border: none;
+    }
+
     footer {
-      box-sizing:border-box;
       margin:0.5em 1em;
       text-align:center;
       font-size:12px;
       margin: auto;
+    }
+
+    #loading_container {
+      position: relative;
+    }
+
+    .loading_screen {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 175px;
+      background: white;
+      text-align: center;
+      font-size: 20px;
     }
   </style>
 
@@ -165,11 +189,19 @@
       <header>
         <h1>motivomotivo</h1>
       </header>
+      <div id="app_general_code_container" class="app_interaction">
+        <input id="general_code_input">
+        <button class="input_btn" id="read_code_btn">leer</button>
+        <button class="input_btn" id="erase_code_btn">borrar</button>
+        <button class="input_btn" id="random_code_btn">aleatorio</button>
+        <button class="input_btn" id="copy_code_btn">copiar código</button>
+        <button class="input_btn" id="save_image_btn">guardar imagen</button>
+      </div>
       <div id="setup_container">
         <label for="x_tiles_input">Baldosas horizontales =></label>
-        <input type="number" min="1" max="15" id="x_tiles_input" value="4">
+        <input type="number" min="1" max="15" id="x_tiles_input" value="4"/>
         <label for="x_tiles_input">Baldosas verticales =></label>
-        <input type="number" min="1" max="15" id="y_tiles_input" value="4">
+        <input type="number" min="1" max="15" id="y_tiles_input" value="4"/>
         <button id="tiles_btn" class="input_btn">Listo</button>
       </div>
       <div id="app_container">
@@ -178,18 +210,18 @@
             <img id="preview_img"/>
           </div>
           <div id="codes_container">
-            <div id="app_general_code_container" class="app_interaction">
-            </div>
             <div id="app_interaction" class="app_interaction">
-              <div id="app_controls_container">
-              </div>
+              <div id="loading_container"></div>
+              <div id="abstractor_container"></div>
+              <div id="app_controls_container"></div>
             </div>
           </div>
         </div>
+        
       </div>
     </div>
     <footer>
-      <p>Por Sergio Rodríguez Gómez — 2021 — V2.0</p>
+      <p>Por Sergio Rodríguez Gómez — 2021 — V2.1</p>
     </footer>
   </body>
 </html>
