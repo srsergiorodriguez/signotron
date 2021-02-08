@@ -6,6 +6,10 @@ V.2.1.0
 MIT LICENSE
 */
 
+/*
+Agregar un selector de paletas
+*/
+
 let codeInput;
 let btnURLS = {shape:[],size:[],position:[],rotation:[],color:[]};
 let iconBtns = [];
@@ -13,7 +17,8 @@ let shapeSets = [];
 let toggleDropdown = false;
 
 function setup() {
-	createCanvas(res,res).id('canvas').parent(app_canvas_container);
+	res = 100;
+	const cnv = createCanvas(res,res).id('canvas').parent(app_canvas_container);
 	background(255);
 	setParameters(); // Change the app config according to url parameters
 	createCodeInput(); // Create the div that will contain the code and its buttons
@@ -23,6 +28,25 @@ function setup() {
 
 	iconBtns = selectAll(".icon_button");
 	shapeSets = selectAll(".shape_set");
+
+	if ( window.location !== window.parent.location ) {
+		cnv.hide();
+		select("#app_canvas_container").hide();
+		select("footer").hide();
+		select("#app_controls_container").style("border","none");
+		sendReadyMessage();
+	}
+	window.addEventListener("message", receiveCode, false);
+}
+
+function receiveCode(event) {
+	// Receive messages from parentwindow
+	if (event.origin !== "http://127.0.0.1:5500") {return}
+	if (event.data.message === "cellCode") {
+		code = event.data.value;
+		codeInput.value(arrayToString(event.data.value));
+		updateButtons();
+	}
 }
 
 function setParameters() {
@@ -38,13 +62,16 @@ function setParameters() {
 function createCodeInput() {
 	// Create the DOM elements for the code input
 	codeInput = createInput(arrayToString(code)).parent(app_code_container).class("code_input");
-	createButton('leer código').parent(app_code_container).class("input_btn")
+	createButton('leer').parent(app_code_container).class("input_btn")
 		.mouseClicked(submitCode);
+
+	createButton('borrar').parent(app_code_container).class("input_btn")
+		.mouseClicked(eraseCode);
 	
-	createButton('código aleatorio').parent(app_code_container).class("input_btn")
+	createButton('aleatorio').parent(app_code_container).class("input_btn")
 		.mouseClicked(randomCode);
 
-	createButton('guardar imagen').parent(app_code_container).class("input_btn")
+	createButton('guardar').parent(app_code_container).class("input_btn")
 		.mouseClicked(saveImage);
 }
 
@@ -79,6 +106,7 @@ function createIconButtons(iconType_,parent_,setIndex_) {
 						selectAll(".dropdown").map(d=>d.remove());
 						updateButtons();
 						toggleDropdown = false;
+						sendCodeMessage();
 					});
 			}
 		} else {
@@ -158,6 +186,7 @@ function readCode() {
 			d.remove();
 		}
 	});
+	sendCodeMessage();
 }
 
 function createIconImgs() {
@@ -185,4 +214,23 @@ function createIconImgs() {
 		}
 	});
 	code = emptyCode;
+}
+
+function sendCodeMessage() {
+	if ( window.location !== window.parent.location ) {
+		window.parent.postMessage({message: "abstractorCode", value: code},"*");
+	}
+}
+
+function sendReadyMessage() {
+	if ( window.location !== window.parent.location ) {
+		window.parent.postMessage({message: "abstractorReady", value: true},"*");
+	}
+}
+
+function eraseCode() {
+	code.fill(0);
+	codeInput.value(arrayToString(code));
+	readCode();
+	updateButtons();
 }
