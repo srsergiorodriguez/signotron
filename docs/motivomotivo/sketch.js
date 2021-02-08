@@ -110,8 +110,8 @@ function cellHighlight() {
 
 function embeddingEvent(event) {
 	// Receive messages from abstractor iframe
-	console.log(event.origin);
-	if (event.origin !== "http://127.0.0.1:5500") {return}
+	// if (event.origin !== "http://127.0.0.1:5500") {return} // FOR TESTS IN LOCAL SERVER
+	if (event.origin !== "https://srsergiorodriguez.github.io") {return}
 	if (event.data.message === "abstractorCode") {
 		if (selectedCell !== undefined) {
 			codeInput[selectedCell].value(arrayToString(event.data.value));
