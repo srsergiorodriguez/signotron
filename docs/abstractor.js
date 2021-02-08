@@ -41,7 +41,8 @@ function setup() {
 
 function receiveCode(event) {
 	// Receive messages from parentwindow
-	if (event.origin !== "http://127.0.0.1:5500") {return}
+	// if (event.origin !== "http://127.0.0.1:5500") {return} // FOR TESTS IN LOCAL SERVER
+	if (event.origin !== "https://srsergiorodriguez.github.io") {return}
 	if (event.data.message === "cellCode") {
 		code = event.data.value;
 		codeInput.value(arrayToString(event.data.value));
