@@ -17,7 +17,6 @@ let shapeSets = [];
 let toggleDropdown = false;
 
 function setup() {
-	res = 100;
 	const cnv = createCanvas(res,res).id('canvas').parent(app_canvas_container);
 	background(255);
 	setParameters(); // Change the app config according to url parameters
