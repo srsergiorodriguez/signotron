@@ -1,7 +1,7 @@
 let preview;
 let cols = 4; // The number of columns displayed on the canvas
 let rows = 4; // The number of rows displayed on the canvas
-const maxTiles = 9;
+const maxTiles = 16;
 let canvasW = 1920; // The width of the canvas
 let canvasH; // The height of the canvas
 let codesNum; // The number of images that fit in the whole canvas
